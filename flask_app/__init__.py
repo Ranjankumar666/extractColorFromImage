@@ -18,7 +18,7 @@ class FileForm(FlaskForm):
     submit = SubmitField("Upload")
 
 
-app.config['SECRET_KEY'] = '2ec21da66d00bd9f60ffa8ec52cac8cc'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 
 @app.after_request
