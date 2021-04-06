@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+        <title>Squeeze</title>
+        <style>
+            .color::before {
+                content: attr(data-color);
+                position: absolute;
+                font-size: 10px;
+                top: -60%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: none;
+                text-transform: capitalize;
+                background-color: #3b82f6;
+                color: #f3f4f6;
+                padding: 2px 2px;
+                width: 5rem;
+                height: 3rem;
+                font-weight: 600;
+                text-align: center;
+                clip-path: polygon(
+                    0% 0%,
+                    100% 0%,
+                    100% 75%,
+                    75% 75%,
+                    64% 100%,
+                    50% 75%,
+                    0% 75%
+                );
+            }
+
+            .color:hover::before {
+                display: inline-block;
+                transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms;
+            }
+        </style>
+    </head>
+    <body>
+        <div
+            class="flex items-center justify-center w-screen h-screen bg-gray-200"
+        >
+            <div class="flex flex-col items-center">
+                <h1
+                    class="text-4xl font-bold text-indigo-500 tracking-wide uppercase"
+                >
+                    Squeeze
+                </h1>
+                <h2
+                    class="text-3xl font-bold mb-10 tracking-wide text-gray-600 leading-8"
+                >
+                    colors out of your photo
+                </h2>
+
+                <form
+                    action=""
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="flex w-full sm:flex-row flex-col items-center md:items-stretch"
+                >
+                    {{form.hidden_tag()}} {{form.image(class="border-2
+                    border-indigo-500 outline-none rounded-sm text-gray-600
+                    md:w-full md:rounded-r-none")}} {% for error in
+                    form.image.errors %}
+                    <p>{{error}}</p>
+                    {% endfor %} {{ form.submit(class="bg-indigo-500
+                    text-gray-100 py-1 px-2 rounded-sm md:rounded-l-none md:m-0
+                    mt-2")}}
+                </form>
+
+                <div class="flex flex-col items-center mt-5">
+                    {% if colors %}
+                    <h3
+                        class="text-lg mb-3 font-bold tracking-wide text-gray-600"
+                    >
+                        Click the color to copy the color code
+                    </h3>
+                    <div class="flex lg:w-max w-96 flex-wrap justify-center">
+                        {% for color in colors %}
+                        <div
+                            class="lg:w-32 lg:h-14 md:w-30 md:h-12 sm:w-28 sm:h-10 w-24 h-8 shadow-lg color relative"
+                            data-color="rgb{{color[0], color[1], color[2]}}"
+                            style="background-color: rgb{{color[0], color[1], color[2]}}"
+                        ></div>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-5">
+                        <button
+                            id="get_css"
+                            class="bg-indigo-500 text-gray-100 py-1 px-2 rounded-sm"
+                        >
+                            Copy Css
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <script src="{{ url_for('static', filename='utils.js')}}"></script>
+            <script src="{{ url_for('static', filename='index.js')}}"></script>
+        </div>
+    </body>
+</html>
